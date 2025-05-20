@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Formulaire d'Inscription</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px}.form-group{margin-bottom:15px}label{display:block;margin-bottom:5px;font-weight:700}input[type=email],input[type=password],input[type=tel],input[type=text],select{width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box}button{background-color:#4caf50;color:#fff;padding:10px 15px;border:none;border-radius:4px;cursor:pointer;font-size:16px}button:hover{background-color:#45a049}.error{color:red;font-size:12px;margin-top:5px;display:none}.input-error{border:1px solid red}.success-message{color:green;margin-top:15px;display:none}
+    </style>
+</head>
+<body>
+<h1>Formulaire d'Inscription</h1>
+<form id="registrationForm">
+    <div class="form-group">
+        <label for="civilite">Civilité *</label>
+        <select id="civilite" name="civilite">
+            <option value="">--Sélectionnez--</option>
+            <option value="M.">M.</option>
+            <option value="Mme">Mme</option>
+            <option value="Autre">Autre</option>
+        </select>
+        <div class="error" id="civilite-error">Veuillez sélectionner une civilité</div>
+    </div>
+    <div class="form-group">
+        <label for="nom">Nom *</label>
+        <input type="text" id="nom" name="nom">
+        <div class="error" id="nom-error">Le nom est obligatoire</div>
+    </div>
+    <div class="form-group">
+        <label for="prenom">Prénom *</label>
+        <input type="text" id="prenom" name="prenom">
+        <div class="error" id="prenom-error">Le prénom est obligatoire</div>
+    </div>
+    <div class="form-group">
+        <label for="adresse">Adresse *</label>
+        <input type="text" id="adresse" name="adresse">
+        <div class="error" id="adresse-error">L'adresse est obligatoire</div>
+    </div>
+    <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email">
+        <div class="error" id="email-error">Veuillez entrer une adresse email valide</div>
+    </div>
+    <div class="form-group">
+        <label for="telephone">Téléphone *</label>
+        <input type="tel" id="telephone" name="telephone">
+        <div class="error" id="telephone-error">Veuillez entrer un numéro de téléphone valide</div>
+    </div>
+    <div class="form-group">
+        <label for="pays">Pays *</label>
+        <select id="pays" name="pays">
+            <option value="">--Sélectionnez--</option>
+            <option value="France">France</option>
+            <option value="Belgique">Belgique</option>
+            <option value="Suisse">Suisse</option>
+            <option value="Canada">Canada</option>
+            <option value="Maroc">Maroc</option>
+        </select>
+        <div class="error" id="pays-error">Veuillez sélectionner un pays</div>
+    </div>
+    <div class="form-group">
+        <label for="login">Login *</label>
+        <input type="text" id="login" name="login">
+        <div class="error" id="login-error">Le login est obligatoire</div>
+    </div>
+    <div class="form-group">
+        <label for="password">Mot de passe *</label>
+        <input type="password" id="password" name="password">
+        <div class="error" id="password-error">Le mot de passe est obligatoire</div>
+    </div>
+    <div class="form-group">
+        <label for="confirm-password">Confirmer mot de passe *</label>
+        <input type="password" id="confirm-password" name="confirm-password">
+        <div class="error" id="confirm-password-error">Les mots de passe ne correspondent pas</div>
+    </div>
+    <button type="submit">S'inscrire</button>
+</form>
+<div class="success-message" id="success-message">Inscription réussie!</div>
+<script>
+    $(document).ready(function(){$("#registrationForm").submit(function(e){e.preventDefault();
+        let i=!0;$(".error").hide(),$("input, select").removeClass("input-error");
+        const r=["civilite","nom","prenom","adresse","email","telephone","pays","login","password","confirm-password"];
+        r.forEach(function(e){""===$("#"+e).val().trim()&&($("#"+e).addClass("input-error"),$("#"+e+"-error").show(),i=!1)});
+        const s=$("#email").val().trim();
+        if(""!==s&&!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(s)&&($("#email").addClass("input-error"),$("#email-error").show(),i=!1),""!==$("#telephone").val().trim()&&!/^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,3}[-\s.]?[0-9]{1,4}[-\s.]?[0-9]{1,4}$/.test($("#telephone").val().trim())&&($("#telephone").addClass("input-error"),$("#telephone-error").show(),i=!1),""!==$("#password").val()&&""!==$("#confirm-password").val()&&$("#password").val()!==$("#confirm-password").val()&&($("#password, #confirm-password").addClass("input-error"),$("#confirm-password-error").show(),i=!1),i){$("#success-message").show(),$("#registrationForm")[0].reset()}})});
+</script>
+</body>
+</html>

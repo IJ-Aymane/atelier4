@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Calculatrice jQuery</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body{font-family:Arial,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background-color:#f5f5f5}
+        .calculator{width:300px;background-color:#222;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,.3);padding:15px}
+        .display{width:100%;height:60px;background-color:#444;border-radius:5px;margin-bottom:15px;display:flex;justify-content:flex-end;align-items:center;padding:0 10px;box-sizing:border-box;position:relative;overflow:hidden}
+        .display input{width:100%;border:none;background:transparent;color:white;font-size:28px;text-align:right}
+        .buttons{display:grid;grid-template-columns:repeat(4,1fr);grid-gap:10px}
+        button{height:50px;border:none;border-radius:5px;font-size:18px;cursor:pointer;background-color:#333;color:white;transition:background-color .2s}
+        button:hover{background-color:#444}
+        .operator{background-color:#FF9500}
+        .operator:hover{background-color:#FFB143}
+        .equal{background-color:#FF9500;grid-column:span 2}
+        .equal:hover{background-color:#FFB143}
+        .clear,.clear-entry{background-color:#A5A5A5;color:black}
+        .clear:hover,.clear-entry:hover{background-color:#CECECE}
+    </style>
+</head>
+<body>
+<div class="calculator">
+    <div class="display">
+        <input type="text" id="display" readonly>
+    </div>
+    <div class="buttons">
+        <button class="clear" id="clear">C</button>
+        <button class="clear-entry" id="clear-entry">CE</button>
+        <button class="operator" id="percent">%</button>
+        <button class="operator" id="divide">÷</button>
+        <button class="number" id="seven">7</button>
+        <button class="number" id="eight">8</button>
+        <button class="number" id="nine">9</button>
+        <button class="operator" id="multiply">×</button>
+        <button class="number" id="four">4</button>
+        <button class="number" id="five">5</button>
+        <button class="number" id="six">6</button>
+        <button class="operator" id="subtract">-</button>
+        <button class="number" id="one">1</button>
+        <button class="number" id="two">2</button>
+        <button class="number" id="three">3</button>
+        <button class="operator" id="add">+</button>
+        <button class="number" id="zero">0</button>
+        <button class="decimal" id="decimal">.</button>
+        <button class="equal" id="equal">=</button>
+    </div>
+</div>
+<script>
+    $(function(){
+        let cur="",op="",prev="",done=false;
+
+        function update(){$("#display").val(cur)}
+
+        $(".number").click(function(){
+            if(done){cur="";done=false}
+            cur+=$(this).text();
+            update();
+        });
+
+        $("#decimal").click(function(){
+            if(!cur.includes(".")){
+                if(cur===""||done){cur="0";done=false}
+                cur+=".";
+                update();
+            }
+        });
+
+        $(".operator").click(function(){
+            if(cur!==""){
+                if(prev!==""){calc()}
+                else{prev=cur;cur=""}
+            }
+            op=$(this).attr("id");
+            done=false;
+        });
+
+        $("#equal").click(calc);
+
+        function calc(){
+            if(prev!==""&&cur!==""){
+                let res;
+                const p=parseFloat(prev),c=parseFloat(cur);
+
+                switch(op){
+                    case "add":res=p+c;break;
+                    case "subtract":res=p-c;break;
+                    case "multiply":res=p*c;break;
+                    case "divide":res=c!==0?p/c:"Erreur";break;
+                    case "percent":res=p*(c/100);break;
+                    default:return;
+                }
+
+                if(typeof res==="number")res=Math.round(res*1000000)/1000000;
+
+                cur=res.toString();
+                prev="";
+                op="";
+                done=true;
+                update();
+            }
+        }
+
+        $("#clear").click(function(){
+            cur="";prev="";op="";done=false;
+            update();
+        });
+
+        $("#clear-entry").click(function(){
+            cur="";done=false;
+            update();
+        });
+
+        update();
+    });
+</script>
+</body>
+</html>
