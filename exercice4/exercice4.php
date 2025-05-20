@@ -3,7 +3,7 @@ $config = [
     'host' => 'localhost',
     'username' => 'root',
     'password' => '',
-    'database' => 'geo_data',
+    'database' => 'exercice4',
     'charset' => 'utf8'
 ];
 
